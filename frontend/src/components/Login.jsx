@@ -21,7 +21,7 @@ export default function Login() {
     setLoading(true);
     setError('');
     try {
-      const { data } = await axios.post('http://localhost:5000/api/login', form);
+      const { data } = await axios.post('https://mail-app-mu-taupe.vercel.app/api/login', form);
       login(data.token);
       navigate('/', { replace: true });
     } catch {

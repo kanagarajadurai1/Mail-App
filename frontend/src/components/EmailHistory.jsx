@@ -9,7 +9,7 @@ export default function EmailHistory() {
   const [expanded, setExpanded] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/emails/history', {
+    axios.get('https://mail-app-mu-taupe.vercel.app/api/emails/history', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(r => setEmails(r.data))
