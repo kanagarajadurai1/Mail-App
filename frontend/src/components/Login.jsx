@@ -21,7 +21,7 @@ export default function Login() {
     setLoading(true);
     setError('');
     try {
-      const { data } = await axios.post('YOUR_NEW_BACKEND_URL/api/login', form);
+      const { data } = await axios.post('https://mail-app-b1.vercel.app/api/login', form);
       login(data.token);
       navigate('/', { replace: true });
     } catch {
