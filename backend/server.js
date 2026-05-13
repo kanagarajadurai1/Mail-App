@@ -10,6 +10,7 @@ connectDB();
 
 const app = express();
 
+app.options('*', cors());
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -24,13 +25,12 @@ app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
   if (username !== ADMIN.username || !bcrypt.compareSync(password, ADMIN.password))
     return res.status(401).json({ message: 'Invalid credentials' });
-
   const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1d' });
   res.json({ token });
 });
 
 app.use('/api/emails', require('./routes/emailRoutes'));
 
-app.get('/', (req, res) => res.json({ status: 'Backend is running!' }));
+app.get('/', (req, res) => res.json({ status: 'Backend running!' }));
 
 module.exports = app;
