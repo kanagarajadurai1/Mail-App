@@ -31,7 +31,7 @@ export default function SendMail() {
 
     try {
       const { data } = await axios.post(
-        'https://mail-app-mu-taupe.vercel.app/api/emails/send',
+        'https://mail-app-b1.vercel.app/api/emails/send',
         { ...form, recipients },
         { headers: { Authorization: `Bearer ${token}` } }
       );
