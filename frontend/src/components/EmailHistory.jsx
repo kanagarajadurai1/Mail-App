@@ -11,7 +11,7 @@ export default function EmailHistory() {
     const fetchHistory = async () => {
       try {
         const { data } = await axios.get(
-          'https://mail-app-sable.vercel.app/api/emails/history',
+          'https://mail-app-b1.vercel.app/api/emails/history',
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setEmails(data);

@@ -17,7 +17,7 @@ export default function SendMail() {
     try {
       const recipients = form.recipients.split(',').map(r => r.trim()).filter(Boolean);
       await axios.post(
-        'https://mail-app-sable.vercel.app/api/emails/send',
+        'https://mail-app-b1.vercel.app/api/emails/send',
         { subject: form.subject, body: form.body, recipients },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -11,23 +11,20 @@ connectDB();
 const app = express();
 
 app.use(cors({
-  origin: [
-    'https://mail-app-ashen.vercel.app',
-    'http://localhost:5173'
-  ],
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials: true
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+app.options('*', cors());
 
 app.use(express.json());
 
-// Admin credentials
 const ADMIN = {
   username: 'admin',
   password: bcrypt.hashSync('admin123', 10),
 };
 
-// POST /api/login
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
   if (username !== ADMIN.username || !bcrypt.compareSync(password, ADMIN.password)) {
