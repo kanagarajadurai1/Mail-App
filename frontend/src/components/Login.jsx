@@ -15,7 +15,7 @@ export default function Login() {
     setLoading(true);
     setError('');
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/login`, form);
+      const { data } = await axios.post('https://mail-app-sable.vercel.app/api/login', form);
       login(data.token);
       navigate('/send');
     } catch {
@@ -62,13 +62,13 @@ export default function Login() {
           from { opacity: 0; transform: translateY(30px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        .lp-badge { animation: fadeUp 0.6s 0.2s both; }
-        .lp-title { animation: fadeUp 0.6s 0.3s both; }
-        .lp-sub   { animation: fadeUp 0.6s 0.4s both; }
-        .lp-f1    { animation: fadeUp 0.6s 0.45s both; }
-        .lp-f2    { animation: fadeUp 0.6s 0.52s both; }
+        .lp-badge    { animation: fadeUp 0.6s 0.2s both; }
+        .lp-title    { animation: fadeUp 0.6s 0.3s both; }
+        .lp-sub      { animation: fadeUp 0.6s 0.4s both; }
+        .lp-f1       { animation: fadeUp 0.6s 0.45s both; }
+        .lp-f2       { animation: fadeUp 0.6s 0.52s both; }
         .lp-btn-wrap { animation: fadeUp 0.6s 0.6s both; }
-        .lp-hint  { animation: fadeUp 0.6s 0.7s both; }
+        .lp-hint     { animation: fadeUp 0.6s 0.7s both; }
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(12px); }
           to   { opacity: 1; transform: translateY(0); }
