@@ -3,133 +3,103 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
 export default function SendMail() {
-  const { token } = useAuth();
-  const [form, setForm] = useState({ subject: '', body: '', recipients: '' });
-  const [status, setStatus] = useState(null); // { type: 'success'|'error', msg }
+  const [form, setForm] = useState({ subject: '', recipients: '', body: '' });
+  const [status, setStatus] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const validate = () => {
-    if (!form.subject.trim()) return 'Subject is required';
-    if (!form.body.trim()) return 'Email body is required';
-    const emails = form.recipients.split(',').map(e => e.trim()).filter(Boolean);
-    if (!emails.length) return 'At least one recipient is required';
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    for (const e of emails) {
-      if (!emailRegex.test(e)) return `Invalid email: ${e}`;
-    }
-    return null;
-  };
+  const { token } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const err = validate();
-    if (err) { setStatus({ type: 'error', msg: err }); return; }
-
     setLoading(true);
-    setStatus(null);
-    const recipients = form.recipients.split(',').map(e => e.trim()).filter(Boolean);
-
+    setStatus('');
+    setError('');
     try {
-      const { data } = await axios.post(
-        'https://mail-app-b1.vercel.app/api/emails/send',
-        { ...form, recipients },
+      const recipients = form.recipients.split(',').map(r => r.trim()).filter(Boolean);
+      await axios.post(
+        'https://mail-app-sable.vercel.app/api/emails/send',
+        { subject: form.subject, body: form.body, recipients },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setStatus({ type: 'success', msg: data.message, url: data.previewURL });
-      setForm({ subject: '', body: '', recipients: '' });
-    } catch (error) {
-      setStatus({ type: 'error', msg: error.response?.data?.message || 'Something went wrong' });
+      setStatus('Emails sent successfully!');
+      setForm({ subject: '', recipients: '', body: '' });
+    } catch {
+      setError('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ maxWidth: 680, margin: '40px auto', padding: '0 20px' }}>
-      <div style={{
-        background: '#fff', borderRadius: 16,
-        boxShadow: '0 4px 20px rgba(0,0,0,0.07)', overflow: 'hidden'
-      }}>
-        {/* Header */}
-        <div style={{ background: 'linear-gradient(135deg, #4361ee, #7209b7)', padding: '24px 32px' }}>
-          <h1 style={{ color: '#fff', fontSize: 22, fontWeight: 700 }}>📨 Send Bulk Email</h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 14, marginTop: 4 }}>
-            Compose and send to multiple recipients at once
-          </p>
+    <div style={{ minHeight: '100vh', background: '#f4f6fb', padding: '2rem 1rem', fontFamily: 'sans-serif' }}>
+      <div style={{ maxWidth: '640px', margin: '0 auto', background: '#fff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
+        <div style={{ background: 'linear-gradient(135deg, #6c63ff, #9b8fff)', padding: '2rem', color: '#fff' }}>
+          <h2 style={{ margin: 0, fontSize: '22px', fontWeight: '600' }}>📧 Send Bulk Email</h2>
+          <p style={{ margin: '4px 0 0', opacity: 0.8, fontSize: '14px' }}>Compose and send to multiple recipients at once</p>
         </div>
 
-        {/* Form */}
-        <div style={{ padding: '32px' }}>
+        <div style={{ padding: '2rem' }}>
           {status && (
-            <div style={{
-              padding: '12px 16px', borderRadius: 8, marginBottom: 20, fontSize: 14,
-              background: status.type === 'success' ? '#f0fff4' : '#fff5f5',
-              border: `1px solid ${status.type === 'success' ? '#68d391' : '#fc8181'}`,
-              color: status.type === 'success' ? '#276749' : '#c53030',
-            }}>
-              {status.type === 'success' ? '✅' : '❌'} {status.msg}
-              {status.url && (
-                <div style={{ marginTop: 8 }}>
-                  <a href={status.url} target="_blank" rel="noreferrer"
-                    style={{ color: '#4361ee', fontWeight: 600, fontSize: 13 }}>
-                    👁 Click here to view sent email
-                  </a>
-                </div>
-              )}
+            <div style={{ background: '#e8f5e9', border: '1px solid #a5d6a7', borderRadius: '8px', padding: '12px 16px', marginBottom: '1.5rem', color: '#2e7d32', fontSize: '14px' }}>
+              ✅ {status}
+            </div>
+          )}
+          {error && (
+            <div style={{ background: '#ffebee', border: '1px solid #ef9a9a', borderRadius: '8px', padding: '12px 16px', marginBottom: '1.5rem', color: '#c62828', fontSize: '14px' }}>
+              ❌ {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: 20 }}>
-              <label style={labelStyle}>Subject</label>
+            <div style={{ marginBottom: '1.2rem' }}>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#444', marginBottom: '6px' }}>Subject</label>
               <input
                 type="text"
-                placeholder="Enter email subject..."
+                placeholder="Enter email subject"
                 value={form.subject}
                 onChange={e => setForm({ ...form, subject: e.target.value })}
+                required
+                style={{ width: '100%', padding: '11px 14px', border: '1px solid #ddd', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
               />
             </div>
 
-            <div style={{ marginBottom: 20 }}>
-              <label style={labelStyle}>Recipients</label>
+            <div style={{ marginBottom: '1.2rem' }}>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#444', marginBottom: '6px' }}>Recipients</label>
               <input
                 type="text"
-                placeholder="email1@example.com, email2@example.com"
+                placeholder="email1@gmail.com, email2@gmail.com"
                 value={form.recipients}
                 onChange={e => setForm({ ...form, recipients: e.target.value })}
+                required
+                style={{ width: '100%', padding: '11px 14px', border: '1px solid #ddd', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
               />
-              <p style={{ fontSize: 12, color: '#a0aec0', marginTop: 5 }}>
-                Separate multiple emails with commas
-              </p>
+              <p style={{ fontSize: '12px', color: '#999', margin: '5px 0 0' }}>Separate multiple emails with commas</p>
             </div>
 
-            <div style={{ marginBottom: 24 }}>
-              <label style={labelStyle}>Email Body</label>
+            <div style={{ marginBottom: '1.5rem' }}>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#444', marginBottom: '6px' }}>Email Body</label>
               <textarea
-                rows={8}
-                placeholder="Write your email content here... HTML is supported!"
+                placeholder="Write your email content here..."
                 value={form.body}
                 onChange={e => setForm({ ...form, body: e.target.value })}
-                style={{ resize: 'vertical' }}
+                required
+                rows={8}
+                style={{ width: '100%', padding: '11px 14px', border: '1px solid #ddd', borderRadius: '8px', fontSize: '14px', outline: 'none', resize: 'vertical', boxSizing: 'border-box' }}
               />
             </div>
 
-            <div style={{ display: 'flex', gap: 12 }}>
+            <div style={{ display: 'flex', gap: '12px' }}>
               <button
                 type="submit"
                 disabled={loading}
-                style={{
-                  flex: 1, background: '#4361ee', color: '#fff',
-                  padding: '13px', fontSize: 15, borderRadius: 10,
-                  opacity: loading ? 0.7 : 1
-                }}
+                style={{ flex: 1, padding: '13px', background: 'linear-gradient(135deg, #6c63ff, #9b8fff)', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: '600', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}
               >
-                {loading ? '⏳ Sending...' : '🚀 Send Emails'}
+                {loading ? 'Sending...' : '🚀 Send Emails'}
               </button>
               <button
                 type="button"
-                onClick={() => { setForm({ subject: '', body: '', recipients: '' }); setStatus(null); }}
-                style={{ background: '#f7fafc', color: '#4a5568', border: '1px solid #e2e8f0' }}
+                onClick={() => setForm({ subject: '', recipients: '', body: '' })}
+                style={{ padding: '13px 24px', background: '#f5f5f5', color: '#555', border: 'none', borderRadius: '8px', fontSize: '15px', cursor: 'pointer' }}
               >
                 Clear
               </button>
@@ -140,8 +110,3 @@ export default function SendMail() {
     </div>
   );
 }
-
-const labelStyle = {
-  display: 'block', fontSize: 13, fontWeight: 600,
-  color: '#4a5568', marginBottom: 6
-};
