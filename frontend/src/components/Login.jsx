@@ -38,7 +38,6 @@ export default function Login() {
     }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Playfair+Display:wght@400;500&display=swap');
-
         .lp-grid-bg {
           position: fixed; inset: 0;
           background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
@@ -58,35 +57,38 @@ export default function Login() {
           0%, 100% { transform: translateY(0px) scale(1); }
           50% { transform: translateY(-30px) scale(1.05); }
         }
-        .lp-card {
-          animation: cardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
+        .lp-card { animation: cardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes cardIn {
           from { opacity: 0; transform: translateY(30px); }
           to { opacity: 1; transform: translateY(0); }
         }
         .lp-badge { animation: fadeUp 0.6s 0.2s both; }
         .lp-title { animation: fadeUp 0.6s 0.3s both; }
-        .lp-sub { animation: fadeUp 0.6s 0.4s both; }
-        .lp-f1 { animation: fadeUp 0.6s 0.45s both; }
-        .lp-f2 { animation: fadeUp 0.6s 0.52s both; }
+        .lp-sub   { animation: fadeUp 0.6s 0.4s both; }
+        .lp-f1    { animation: fadeUp 0.6s 0.45s both; }
+        .lp-f2    { animation: fadeUp 0.6s 0.52s both; }
         .lp-btn-wrap { animation: fadeUp 0.6s 0.6s both; }
-        .lp-hint { animation: fadeUp 0.6s 0.7s both; }
+        .lp-hint  { animation: fadeUp 0.6s 0.7s both; }
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(12px); }
-          to { opacity: 1; transform: translateY(0); }
+          to   { opacity: 1; transform: translateY(0); }
         }
         .lp-dot { animation: pulse 2s ease-in-out infinite; }
         @keyframes pulse {
           0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(0.7); }
+          50%       { opacity: 0.5; transform: scale(0.7); }
         }
         .lp-input {
-          width: 100%; background: rgba(255,255,255,0.06);
+          width: 100%;
+          background: rgba(255,255,255,0.06);
           border: 0.5px solid rgba(255,255,255,0.1);
-          border-radius: 10px; padding: 12px 14px 12px 42px;
-          font-family: 'DM Sans', sans-serif; font-size: 14px;
-          color: #f0eeff; outline: none; box-sizing: border-box;
+          border-radius: 10px;
+          padding: 12px 14px 12px 42px;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 14px;
+          color: #f0eeff;
+          outline: none;
+          box-sizing: border-box;
           transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
         }
         .lp-input::placeholder { color: rgba(255,255,255,0.2); }
@@ -99,8 +101,9 @@ export default function Login() {
           width: 100%; padding: 13px;
           background: linear-gradient(135deg, #6c63ff 0%, #9b8fff 100%);
           border: none; border-radius: 10px;
-          font-family: 'DM Sans', sans-serif; font-size: 14px;
-          font-weight: 500; color: #fff; cursor: pointer;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 14px; font-weight: 500; color: #fff;
+          cursor: pointer;
           display: flex; align-items: center; justify-content: center; gap: 8px;
           transition: transform 0.15s, box-shadow 0.2s;
           position: relative; overflow: hidden;
@@ -143,31 +146,61 @@ export default function Login() {
           fontFamily: "'Playfair Display', serif", fontSize: '28px',
           fontWeight: '500', color: '#f0eeff', margin: '0 0 0.4rem', lineHeight: '1.2',
         }}>Welcome back</h1>
-        <p className="lp-sub" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.35)', margin: '0 0 2rem', fontWeight: '300' }}>
-          Sign in to your BulkMail dashboard
-        </p>
+
+        <p className="lp-sub" style={{
+          fontSize: '13px', color: 'rgba(255,255,255,0.35)',
+          margin: '0 0 2rem', fontWeight: '300',
+        }}>Sign in to your BulkMail dashboard</p>
 
         <form onSubmit={handleSubmit}>
           <div className="lp-f1" style={{ marginBottom: '1.1rem' }}>
-            <label style={{ fontSize: '11px', fontWeight: '500', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '8px' }}>Username</label>
+            <label style={{
+              fontSize: '11px', fontWeight: '500', color: 'rgba(255,255,255,0.4)',
+              textTransform: 'uppercase', letterSpacing: '0.1em',
+              display: 'block', marginBottom: '8px',
+            }}>Username</label>
             <div style={{ position: 'relative' }}>
-              <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.25)', fontSize: '16px', pointerEvents: 'none' }}>👤</span>
-              <input className="lp-input" type="text" placeholder="admin"
-                value={form.username} onChange={e => setForm({ ...form, username: e.target.value })} />
+              <span style={{
+                position: 'absolute', left: '14px', top: '50%',
+                transform: 'translateY(-50%)',
+                color: 'rgba(255,255,255,0.25)', fontSize: '16px', pointerEvents: 'none',
+              }}>👤</span>
+              <input
+                className="lp-input"
+                type="text"
+                placeholder="admin"
+                value={form.username}
+                onChange={e => setForm({ ...form, username: e.target.value })}
+              />
             </div>
           </div>
 
           <div className="lp-f2" style={{ marginBottom: '1.1rem' }}>
-            <label style={{ fontSize: '11px', fontWeight: '500', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '8px' }}>Password</label>
+            <label style={{
+              fontSize: '11px', fontWeight: '500', color: 'rgba(255,255,255,0.4)',
+              textTransform: 'uppercase', letterSpacing: '0.1em',
+              display: 'block', marginBottom: '8px',
+            }}>Password</label>
             <div style={{ position: 'relative' }}>
-              <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.25)', fontSize: '16px', pointerEvents: 'none' }}>🔒</span>
-              <input className="lp-input" type="password" placeholder="••••••••"
-                value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} />
+              <span style={{
+                position: 'absolute', left: '14px', top: '50%',
+                transform: 'translateY(-50%)',
+                color: 'rgba(255,255,255,0.25)', fontSize: '16px', pointerEvents: 'none',
+              }}>🔒</span>
+              <input
+                className="lp-input"
+                type="password"
+                placeholder="••••••••"
+                value={form.password}
+                onChange={e => setForm({ ...form, password: e.target.value })}
+              />
             </div>
           </div>
 
           {error && (
-            <p style={{ color: '#ff6b6b', fontSize: '13px', marginBottom: '1rem', textAlign: 'center' }}>{error}</p>
+            <p style={{ color: '#ff6b6b', fontSize: '13px', marginBottom: '1rem', textAlign: 'center' }}>
+              {error}
+            </p>
           )}
 
           <div className="lp-btn-wrap">
@@ -177,7 +210,11 @@ export default function Login() {
           </div>
         </form>
 
-        <div className="lp-hint" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '1.5rem', fontSize: '12px', color: 'rgba(255,255,255,0.2)' }}>
+        <div className="lp-hint" style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          gap: '6px', marginTop: '1.5rem',
+          fontSize: '12px', color: 'rgba(255,255,255,0.2)',
+        }}>
           🛡 admin / admin123 · JWT secured
         </div>
       </div>
